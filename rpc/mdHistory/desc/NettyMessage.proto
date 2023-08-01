@@ -1,0 +1,630 @@
+syntax = "proto3";
+package example;
+option go_package = "./mdHistoryUju";
+
+service FutureHisTickService {
+
+}
+message NettyMessage {
+    Header header = 1;
+	LoginReqMessage loginReqMessage = 2;
+	LoginRespMessage loginRespMessage = 3;
+	BusinessReqMessage businessReqMessage =4;
+	repeated BusinessRespMessage businessRespMessage =5;
+}
+
+enum  Type {
+	SERVICE_REQ = 0;    // 接口请求
+	SERVICE_RESP = 1;  // 接口响应
+	ONE_WAY = 2;        // 单向请求
+	LOGIN_REQ =3;     // 登录请求
+	LOGIN_RESP =4;   // 登录响应
+	HEARTBEAT_REQ =5; //  心跳请求
+	HEARTBEAT_RESP =6; // 心跳响应
+}
+
+message Header{
+    int32 crcCode = 1;  // 
+	int32 length = 2;   // 
+	int64 sessionID =3; //
+	
+	Type type = 4;
+	bytes priority =5; // 
+}
+
+message LoginReqMessage {
+   string username = 1; // 登录用户名
+   string passwd = 2; // 密码 需md5加密
+}
+
+enum LoginResult {
+	SUCCESS =0;  // 登录成功标识
+	FAIL =1; // 登录失败
+}
+// login response
+message LoginRespMessage {
+   LoginResult loginResult = 1;
+}
+
+// business req
+message BusinessReqMessage{
+   repeated  string stockCodes =1; //股票代码
+   repeated  int32 types =2;  // -91 行情 -92 指数 -89 逐笔成交 -87 逐笔委托 -86 逐笔tick
+   int32 businessType = 3; // 
+}
+
+
+message BusinessRespMessage{
+   int32 dataType = 11;
+   repeated UJU_TDF_BBQBID_DATA uju_tdf_bbqbid_data =1;
+   repeated UJU_TDF_BBQTRANSACTION     uju_tdf_bbqtransaction    =2;
+   repeated UJU_TDF_BROKER_QUEUE       uju_tdf_broker_queue      =3;
+   repeated UJU_TDF_FUTURE_DATA        uju_tdf_future_data       =4;
+   repeated UJU_TDF_INDEX_DATA         uju_tdf_index_data        =5;
+   UJU_TDF_MARKET_CLOSE_DATA  uju_tdf_market_close_data =6;
+   repeated UJU_TDF_MARKET_DATA        uju_tdf_market_data       =7;
+   repeated UJU_TDF_ORDER_QUEUE        uju_tdf_order_queue       =8;
+   repeated UJU_TDF_ORDER              uju_tdf_order             =9;
+   repeated UJU_TDF_TRANSACTION        uju_tdf_transaction       =10;
+   repeated string stocks = 12;   // the system now have 
+   repeated UJU_SSEL2_Transaction uju_ssel2_transaction = 13;
+   repeated UJU_SSEL2_Order uju_ssel2_order = 14;
+   repeated UJU_SSEL2_BondTick uju_ssel2_bondtick = 15;
+   repeated UJU_SZSEL2_Order uju_szsel2_order = 16;
+   repeated UJU_SZSEL2_Transaction uju_szsel2_transaction = 17;
+   repeated UJU_SZSEL2_Tick uju_szsel2_tick = 18;
+}
+
+// 1 BBQBID_DATA 
+message UJU_TDF_BBQBID_DATA{
+   string windCode =1;
+   int32 actionDay=2;
+   int32 time=3;
+   string source=4;
+   int64 bidPrice=5;
+   int64 bidVolume=6;
+   int64 bidPriceStatus=7;
+   string isBid=8;
+   string bidSpecialFlag=9;
+   string bidStatus=10;
+   int64 ofrPrice=11;
+   int64 ofrVolume=12;
+   string ofrPriceStatus=13;
+   string isOfr=14;
+   string ofrSpecialFlag=15;
+   string ofrStatus=16;
+}
+
+
+// 2 BBQTRANSACTION
+message UJU_TDF_BBQTRANSACTION{
+    string windCode=1;
+	int32 actionDay=2;
+	int32 time=3;
+	int32 doneID=4;
+	int64 price=5;
+	string priceStatus=6;
+	string status=7;
+	string direction=8;
+	string source=9;
+	string specialFlag=10;
+}
+
+// 3 BROKER_QUEUE
+message UJU_TDF_BROKER_QUEUE{
+    string windCode=1;
+	string code=2;
+	int32 actionDay=3;
+	int32 askTime=4;
+	int32 bidTime=5;
+	int32 askBrokers=6;
+	int32 bidBrokers=7;
+	repeated int32 askBroker=8;
+	repeated int32 bidBroker=9;
+}
+// 4
+message UJU_TDF_FUTURE_DATA{
+      string windCode=1;
+	  string code=2; 
+	  int32 actionDay=3;
+	  int32 tradingDay=4;
+	  int32 time=5;
+	  int32 status=6;
+	  int64 preOpenInterest=7;
+	  int64 preClose=8;
+	  int64 preSettlePrice=9;
+	  int64 open=10;
+	  int64 high=11;
+	  int64 low=12;
+	  int64 match=13;
+	  int64 volume=14;
+	  int64 turnover=15;
+	  int64 openInterest=16;
+	  int64 close=17;
+	  int64 settlePrice=18;
+	  int64 highLimited=19;
+	  int64 lowLimited=20;
+	  int32 preDelta=21;
+	  int32 currDelta=22;
+	  repeated int64 askPrice=23;
+	  repeated int64 askVol=24;
+	  repeated int64 bidPrice=25;
+	  repeated int64 bidVol=26;
+}
+//5
+message UJU_TDF_INDEX_DATA{
+      string windCode=1;
+	  string code=2;
+	  int32 actionDay=3;
+	  int32 tradingDay=4;
+	  int32 time=5;
+	  int32 status=6;
+	  int64 openIndex=7;
+	  int64 highIndex=8;
+	  int64 lowIndex=9;
+	  int64 lastIndex=10;
+	  int64 totalVolume=11;
+	  int64 turnover=12;
+	  int64 preCloseIndex=13;
+}
+//6
+message UJU_TDF_MARKET_CLOSE_DATA{
+    string market=1;
+	int32 time=2;
+	string info=3;
+}
+
+//7
+message UJU_TDF_MARKET_DATA{
+      string windCode=1;
+	  string code=2;
+	  int32 actionDay=3;
+	  int32 tradingDay=4;
+	  int32 time=5;
+	  int32 status=6;
+	  int64 preClose=7;
+	  int64 open=8;
+	  int64 high=9;
+	  int64 low=10;
+	  int64 match=11;
+	  repeated int64 askPrice=12;
+	  repeated int64 askVol=13;
+	  repeated int64 bidPrice=14;
+	  repeated int64 bidVol=15;
+	  int64 numTrades=16;
+	  int64 volume=17;
+	  int64 turnover=18;
+	  int64 totalBidVol=19;
+	  int64 totalAskVol=20;
+	  int64 weightedAvgBidPrice=21;
+	  int64 weightedAvgAskPrice=22;
+	  int32 IOPV=23;
+	  int32 yieldToMaturity=24;
+	  int64 highLimited=25;
+	  int64 lowLimited=26;
+	  string prefix=27;
+	  int32 syl1=28;
+	  int32 syl2=29;
+	  int32 SD2=30;
+	  string realStatus=31;
+	  string oneSpeed=32;
+	  string twoSpeed=33;
+	  string threeSpeed=34;
+	  string fourSpeed=35;
+	  string fiveSpeed=36;
+}
+
+//8
+message UJU_TDF_ORDER_QUEUE{
+    string windCode=1;
+	string code=2;
+	int32 actionDay=3;
+	int32 time=4;
+	int32 side=5;
+	int64 price=6;
+	int32 orders=7;
+	int32 ABItems=8;
+	repeated int32 ABVolume=9;
+}
+
+
+//9
+message UJU_TDF_ORDER{
+    string windCode=1;
+	string code=2;
+	int32 actionDay=3;
+	int32 time=4;
+	int32 order=5;
+	int64 price=6;
+	int32 volume=7;
+	string orderKind=8;
+	string functionCode=9;
+}
+//10
+message UJU_TDF_TRANSACTION{
+    string windCode=1;
+	string code=2;
+	int32 actionDay=3;
+	int32 time=4;
+	int32 index=5;
+	int64 price=6;
+	int32 volume=7;
+	int64 turnover=8;
+	int32 BSFlag=9;
+	string orderKind=10;
+	string functionCode=11;
+	int32 askOrder=12;
+	int32 bidOrder=13;
+}
+// 深圳静态数据
+message UJU_SZSEL2_STATIC{
+	string LocalTimeStamp=1;
+	string QuotationFlag=2;
+	string Symbol=3;
+	string SecurityName=4;
+	string SymbolSource=5;
+	string SecurityEN=6;
+	string ISINCode=7;
+	string SymbolUnderlying=8;
+	string UnderlyingSecurityIDSource=9;
+	int32 SecurityType=10;
+	string SecurityStatusTag=11;
+	double PreClosePrice=12;
+	int32 ListingDate=13;
+	string Currency=14;
+	double ParValue=15;
+	double IssuedVolume=16;
+	double OutstandingShare=17;
+	string IndustryType=18;
+	double PreYearEPS=19;
+	double YearEPS=20;
+	string OfferingFlag=21;
+	double NAV=22;
+	double CouponRate=23;
+	double IssuePrice=24;
+	double Interest=25;
+	int32 InterestAccrualDate=26;
+	int32 MaturityDate=27;
+	double ConversionPrice=28;
+	double ConversionRatio=29;
+	int32 ConversionBeginDate=30;
+	int32 ConversionEndDate=31;
+	string CallOrPut=32;
+	string WarrantClearingType=33;
+	double ClearingPrice=34;
+	string OptionType=35;
+	int32 EndDate=36;
+	int32 ExpirationDays=37;
+	string DayTrading=38;
+	string GageFlag=39;
+	double GageRate=40;
+	string CrdBuyUnderlying=41;
+	string CrdSellUnderlying=42;
+	string CrdPriceCheckType=43;
+	string PledgeFlag=44;
+	double ContractMultiplier=45;
+	string RegularShare=46;
+	string QualificationFlag=47;
+	string MarketMakerFlag=48;
+	double RoundLot=49;
+	double TickSize=50;
+	double BuyQtyUpperLimit=51;
+	double SellQtyUpperLimit=52;
+	double BuyVolumeUnit=53;
+	double SellVolumeUnit=54;
+	double LimitUpRateO=55;
+	double LimitDownRateO=56;
+	double LimitUpAbsoluteO=57;
+	double LimitDownAbsoluteO=58;
+	double AuctionUpDownRateO=59;
+	double AuctionUpDownAbsoluteO=60;
+	double LimitUpRateT=61;
+	double LimitDownRateT=62;
+	double LimitUpAbsoluteT=63;
+	double LimitDownAbsoluteT=64;
+	double AuctionUpDownRateT=65;
+	double AuctionUpDownAbsoluteT=66;
+	double LimitUpRateC=67;
+	double LimitDownRateC=68;
+	double LimitUpAbsoluteC=69;
+	double LimitDownAbsoluteC=70;
+	double AuctionUpDownRateC=71;
+	double AuctionUpDownAbsoluteC=72;
+	int32 TradeDate=73;
+	string QualificationClass=74;
+	string Attribute=75;
+	string NoProfit=76;
+	string WeightedVotingRights =77;
+	string SecurityNameEx=78;
+	string IsRegistration =79;
+	string IsVIE=80;
+	double MktBuyQtyUpLimit=81;
+	double MktSellQtyUpLimit=82;
+	double MktBuyQtyUnit=83;
+	double MktSellQtyUnit=84;
+	double FixedPriceBuyQtyUpLimit=85;
+	double FixedPriceSellQtyUpLimit=86;
+	double FixedPriceBuyQtyUnit=87;
+	double FixedPriceSellQtyUnit=88;
+}
+
+// 上证静态数据
+message UJU_SSEL2_STATIC{
+	int32 LocalTimeStamp=1;
+	string QuotationFlag=2;
+	sint64 PacketTimeStamp=3;
+	int32 Time=4;
+	string Symbol=5;
+	string ISINCode=6;
+	string SecurityName=7;
+	string SecurityEN=8;
+	string SymbolUnderlying=9;
+	string MarketType=10;
+	string CFICode=11;
+	string SecuritySubType=12;
+	string Currency=13;
+	double ParValue=14;
+	sint64 TradableNo=15;
+	int32 EndDate=16;
+	int32 ListingDate=17;
+	int32 SetNo=18;
+	int32 BuyVolumeUnit=19;
+	int32 SellVolumeUnit=20;
+	int32 DeclareVolumeFloor=21;
+	int32 DeclareVolumeCeiling=22;
+	double PreClosePrice=23;
+	double TickSize=24;
+	string UpDownLimitType=25;
+	double PriceUpLimit=26;
+	double PriceDownLimit=27;
+	double XRRatio=28;
+	double XDAmount=29;
+	string CrdBuyUnderlying=30;
+	string CrdSellUnderlying=31;
+	string SecurityStatus=32;
+	int32 SampleNo=33;
+	double SampleAvgPrice=34;
+	double TradeAmount=35;
+	double AvgCapital=36;
+	double TotalMarketValue=37;
+	double MarketValueRatio=38;
+	double StaticPERatio=39;
+	string IndexLevelStatus=40;
+	int32 TradeDate=41;
+	string GageUnderlying=42;
+	double CrdBuyBalance=43;
+	uint64 CrdSellMargin=44;
+	uint64 MktOrdCeiling=45;
+	uint64 MktOrdFloor=46;
+	uint64 OutstandingShare=47;
+	double CumulativeChgVolume=48;
+	string CDRSecurityName=49;
+	double CDRConvertBase=50;
+	double UnderlyingConvertBase=51;
+	string NameUnderlying=52;
+	string DepositoryCode=53;
+	string DepositoryName=54;
+	string InitialDay=55;
+	string TerminationDay=56;
+	string GDRSecurityName=57;
+	int64 ListingGDRSharesNo=58;
+	uint64 ListingUnderlyingStockNo=59;
+	string NewSharesListingDate=60;
+	string NewSharesReason=61;
+	string GDRSwitchRatio=62;
+	string CountryRegisterID=63;
+	string MarketSegmentCode=64;
+	string MarketSectorCode=65;
+	string SEDOL=66;
+	double PreOpenPrice=67;
+	double PreCloseBuyPrice01=68;
+	double SybUndPreClosePrice=69;
+	double PreCloseSellPrice01=70;
+	uint64 PreTotalVolume=71;
+	double PreTotalAmount=72;
+	uint64 PreTotalNo=73;
+	double PreHighPrice=74;
+	double PreLowPrice=75;
+	double PreNonAutoHighPrice=76;
+	double PreNonAutoLowPrice=77;
+	double YearHighPrice=78;
+	int32 DateYearHighPrice=79;
+	double YearLowPrice=80;
+	int32 DateYearLowPrice=81;
+	double YearNonAutoHighPrice=82;
+	int32 DateYearNonAutoHighPrice=83;
+	double YearNonAutoLowPrice=84;
+	int32 DateYearNonAutoLowPrice=85;
+	double PreAveragePrice=86;
+	string SecurityNameEx=87;
+}
+
+// 上证债券静态数据
+message UJU_SSEL2_BondStatic{
+	int32 LocalTimeStamp=1;
+	string QuotationFlag=2;
+	sint64 PacketTimeStamp=3;
+	int32 Time=4;
+	string Symbol=5;
+	string ISINCode=6;
+	string SecurityName=7;
+	string SecurityEN=8;
+	string SymbolUnderlying=9;
+	string MarketType=10;
+	string CFICode=11;
+	string SecuritySubType=12;
+	string Currency=13;
+	double ParValue=14;
+	sint64 TradableNo=15;
+	int32 EndDate=16;
+	int32 ListingDate=17;
+	int32 SetNo=18;
+	int32 BuyVolumeUnit=19;
+	int32 SellVolumeUnit=20;
+	int32 DeclareVolumeFloor=21;
+	int32 DeclareVolumeCeiling=22;
+	double PreClosePrice=23;
+	double TickSize=24;
+	string UpDownLimitType=25;
+	double PriceUpLimit=26;
+	double PriceDownLimit=27;
+	double XRRatio=28;
+	double XDAmount=29;
+	string CrdBuyUnderlying=30;
+	string CrdSellUnderlying=31;
+	string SecurityStatus=32;
+	int32 SampleNo=33;
+	double SampleAvgPrice=34;
+	double TradeAmount=35;
+	double AvgCapital=36;
+	double TotalMarketValue=37;
+	double MarketValueRatio=38;
+	double StaticPERatio=39;
+	string IndexLevelStatus=40;
+	int32 TradeDate=41;
+	string GageUnderlying=42;
+	double CrdBuyBalance=43;
+	uint64 CrdSellMargin=44;
+	uint64 MktOrdCeiling=45;
+	uint64 MktOrdFloor=46;
+	uint64 OutstandingShare=47;
+	double CumulativeChgVolume=48;
+	string CDRSecurityName=49;
+	double CDRConvertBase=50;
+	double UnderlyingConvertBase=51;
+	string NameUnderlying=52;
+	string DepositoryCode=53;
+	string DepositoryName=54;
+	string InitialDay=55;
+	string TerminationDay=56;
+	string GDRSecurityName=57;
+	int64 ListingGDRSharesNo=58;
+	uint64 ListingUnderlyingStockNo=59;
+	string NewSharesListingDate=60;
+	string NewSharesReason=61;
+	string GDRSwitchRatio=62;
+	string CountryRegisterID=63;
+	string MarketSegmentCode=64;
+	string MarketSectorCode=65;
+	string SEDOL=66;
+	double PreOpenPrice=67;
+	double PreCloseBuyPrice01=68;
+	double SybUndPreClosePrice=69;
+	double PreCloseSellPrice01=70;
+	uint64 PreTotalVolume=71;
+	double PreTotalAmount=72;
+	uint64 PreTotalNo=73;
+	double PreHighPrice=74;
+	double PreLowPrice=75;
+	double PreNonAutoHighPrice=76;
+	double PreNonAutoLowPrice=77;
+	double YearHighPrice=78;
+	int32 DateYearHighPrice=79;
+	double YearLowPrice=80;
+	int32 DateYearLowPrice=81;
+	double YearNonAutoHighPrice=82;
+	int32 DateYearNonAutoHighPrice=83;
+	double YearNonAutoLowPrice=84;
+	int32 DateYearNonAutoLowPrice=85;
+	double PreAveragePrice=86;
+	string SecurityNameEx=87;
+}
+
+// 上交所逐笔成交
+message UJU_SSEL2_Transaction{
+   int32 LocalTimeStamp=1;
+   string QuotationFlag=2;
+   sint64 PacketTimeStamp=3;
+   int32 TradeTime=4;
+   uint32 RecID=5;
+   int32 TradeChannel=6;
+   string Symbol=7;
+   double TradePrice=8;
+   uint32 TradeVolume=9;
+   double TradeAmount=10;
+   int64 BuyRecID=11;
+   int64 SellRecID=12;
+   string BuySellFlag=13;
+   int64 RecNO=14;
+}
+
+// 上交所逐笔委托
+message UJU_SSEL2_Order{
+  int32 LocalTimeStamp=1;
+  string QuotationFlag=2;
+  int64 PacketTimeStamp=3;
+  uint32 RecID=4;
+  int32 setID=5;
+  string Symbol=6;
+  int32 Time=7;
+  string OrderType=8;
+  int64 OrderID=9;
+  double OrderPrice=10;
+  double Balance=11;
+  string OrderCode=12;
+  int64 RecNO=13;
+}
+// 上交所债券逐笔行情
+message UJU_SSEL2_BondTick{
+  int32 LocalTimeStamp=1;
+  string QuotationFlag=2;
+  int64 PacketTimeStamp=3;
+  int32 TickTime=4;
+  uint32 RecID=5;
+  int32 Channel=6;
+  string Symbol=7;
+  double TickPrice=8;
+  uint32 TickVolume=9;
+  double TradeAmount=10;
+  string TickBSFlag=11;
+  string TickType=12;
+  string BuyOrderNO=13;
+  int64 SellOrderNO=14;
+}
+//  深交所逐笔委托
+message UJU_SZSEL2_Order{
+   int32 LocalTimeStamp=1;
+   string QuotationFlag=2;
+   uint32 SetID=3;
+   uint64 RecID=4;
+   string Symbol=5;
+   string SymbolSource=6;
+   int64 Time=7;
+   double OrderPrice=8;
+   double OrderVolume=9;
+   string OrderCode=10;
+   string OrderType=11;
+}
+//  深交所逐笔成交
+message UJU_SZSEL2_Transaction{
+   int32 LocalTimeStamp =1;
+   string QuotationFlag=2;
+   uint32 SetID=3;
+   uint64 RecID=4;
+   uint64 BuyOrderID=5;
+   uint64 SellOrderID=6;
+   string Symbol=7;
+   string SymbolSource=8;
+   int64 TradeTime=9;
+   double TradePrice=10;
+   double TradeVolume=11;
+   string TradeType=12;
+}
+//  深交所逐笔行情
+message UJU_SZSEL2_Tick{
+   int32 LocalTimeStamp=1;
+   string QuotationFlag=2;
+   uint32 SetID=3;
+   uint64 RecID=4;
+   string Symbol=5;
+   string SymbolSource=6;
+   int64 Time=7;
+   double TickPrice=8;
+   double TickVolume=9;
+   string OrderCode=10;
+   string TickType=11;
+   uint64 BuyOrderID=12;
+   uint64 SellOrderID=13;
+   string OOrT=14;
+}
+

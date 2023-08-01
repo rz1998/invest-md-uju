@@ -1,0 +1,64 @@
+package mdCurrent
+
+// 基本
+const (
+	// BUSINESSREQ 申请业务
+	BUSINESSREQ = 1
+
+	// STOCKCODE_ADD 添加股票信息
+	STOCKCODE_ADD = 2
+
+	// STOCKCODE_DEL 取消订阅某张股票的信息
+	STOCKCODE_DEL = 3
+
+	// STOCKCODE_ADD_SUCCESS 行情订阅成功
+	STOCKCODE_ADD_SUCCESS = 4
+
+	// STOCKCODE_ADD_FAIL 行情订阅失败
+	STOCKCODE_ADD_FAIL = 5
+
+	// STOCKCODE_DEL_SUCCESS 行情取消订阅成功
+	STOCKCODE_DEL_SUCCESS = 6
+
+	// STOCKCODE_DEL_FAIL 行情取消订阅订阅失败
+	STOCKCODE_DEL_FAIL = 7
+)
+
+// 逐笔
+const (
+	// DEL_ADD  添加股票信息
+	DEL_ADD = 8
+
+	// DEL_DEL 取消订阅某张股票的信息
+	DEL_DEL = 9
+
+	// DEL_ADD_SUCCESS 行情订阅成功
+	DEL_ADD_SUCCESS = 10
+
+	// DEL_ADD_FAIL 行情订阅失败
+	DEL_ADD_FAIL = 11
+
+	// DEL_DEL_SUCCESS 行情取消订阅成功
+	DEL_DEL_SUCCESS = 12
+
+	// DEL_DEL_FAIL 行情取消订阅订阅失败
+	DEL_DEL_FAIL = 13
+
+	// IN_ADD 添加股票信息
+	IN_ADD = 14
+
+	// IN_DEL 取消订阅某张股票的信息
+	IN_DEL = 15
+
+	// INDEX_ADD_SUCCESS 逐笔订阅成功
+	INDEX_ADD_SUCCESS = 16
+
+	// INDEX_ADD_FAIL 逐笔订阅失败
+	INDEX_ADD_FAIL = 17
+
+	// INDEX_DEL_SUCCESS 逐笔取消订阅成功
+	INDEX_DEL_SUCCESS = 18
+
+	// INDEX_DEL_FAIL 逐笔取消订阅订阅失败
+	INDEX_DEL_FAIL = 19
+)

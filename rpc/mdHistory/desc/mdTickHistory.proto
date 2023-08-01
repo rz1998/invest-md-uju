@@ -1,0 +1,80 @@
+syntax = "proto3";
+package example;
+option go_package = "./mdHistoryUju";
+
+// 请求期货历史行情接口服务
+service FutureHisTickService {
+  // 查询期货期权历史行情
+  rpc queryFutureHisTick (Request) returns (Response) {}
+  // 查询股票历史行情
+  rpc queryStockHisTick (Request) returns (Response) {}
+}
+
+// 历史行情请求
+message Request
+{
+  string instrumentId = 1;// 合约代码 如IC2012
+  string date = 2;// 日期 20200819
+  string exchangeId = 3;// 交易所Id
+}
+
+// 返回数据
+message Data
+{
+  StaticContent staticContent = 1;// 静态数据
+  repeated DynamicContent dynamicContent = 2;// 动态数据
+  int32 dynamicContentCount = 3;// 动态数据量
+}
+// 历史行情响应
+message Response
+{
+  int32 code = 1;// 200 成功  300 失败
+  string message = 2;// 200 成功  300 失败
+  Request request = 3;// 请求回显
+  Data data = 4;// 返回数据
+
+}
+
+// 静态数据
+message StaticContent
+{
+  string pricePreSettlement = 1;// preSettlementPrice
+  string pricePreClose = 2;// preClosePrice
+  string interestPreOpen = 3;// preOpenInterest
+  string priceOpen = 4;// openPrice
+  string priceUpperLimit = 5;// upperLimitPrice
+  string priceLowerLimit = 6;// lowerLimitPrice
+  string tradingDay = 7;// tradingDay
+  string instrumentId = 8;// instrumentId
+  string exchangeId = 9;// exchangeId
+  string code = 10;// code
+}
+
+// 动态数据
+message DynamicContent
+{
+  OnOrder onOrder = 1;//
+  OnTrade onTrade = 2;//
+}
+
+// 委托数据
+message OnOrder
+{
+  string priceBid = 1;// bidPrice
+  string volumeBid = 2;// bidVolume
+  string priceAsk = 3;// askPrice
+  string volumeAsk = 4;// askVolume
+}
+
+// 成交数据
+message OnTrade
+{
+  string time = 1;// time
+  string priceLast = 2;// lastPrice
+  string volumeL = 3;// lVolume
+  string interestOpen = 4;// openInterest
+  string volumeTrade = 5;// tradeVolume
+  string priceHighest = 6;// highestPrice
+  string priceLowest = 7;// lowestPrice
+  string priceAverage = 8;// averagePrice
+}
