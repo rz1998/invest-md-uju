@@ -4,7 +4,12 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
-	"github.com/golang/protobuf/proto"
+	"io"
+	"net"
+	"strings"
+	"time"
+
+	"github.com/gogo/protobuf/proto"
 	"github.com/rz1998/invest-basic/types/investBasic"
 	"github.com/rz1998/invest-md-uju/rpc/mdCurrent/internal/config"
 	"github.com/rz1998/invest-md-uju/rpc/mdCurrent/internal/logic"
@@ -14,10 +19,6 @@ import (
 	"github.com/rz1998/invest-trade-basic/types/tradeBasic"
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/logx"
-	"io"
-	"net"
-	"strings"
-	"time"
 )
 
 type ApiMDUju struct {

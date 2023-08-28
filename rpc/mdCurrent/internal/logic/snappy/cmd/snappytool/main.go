@@ -3,10 +3,10 @@ package main
 import (
 	"errors"
 	"flag"
-	"io/ioutil"
+	"io"
 	"os"
 
-	"snappy"
+	"github.com/rz1998/invest-md-uju/rpc/mdCurrent/internal/logic/snappy"
 )
 
 var (
@@ -20,7 +20,7 @@ func run() error {
 		return errors.New("exactly one of -d or -e must be given")
 	}
 
-	in, err := ioutil.ReadAll(os.Stdin)
+	in, err := io.ReadAll(os.Stdin)
 	if err != nil {
 		return err
 	}

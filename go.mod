@@ -3,8 +3,8 @@ module github.com/rz1998/invest-md-uju
 go 1.20
 
 require (
-	github.com/golang/protobuf v1.5.3
-	github.com/rz1998/invest-basic v0.0.1
+	github.com/gogo/protobuf v1.3.2
+	github.com/rz1998/invest-basic v0.0.2
 	github.com/rz1998/invest-trade-basic v0.0.1
 	github.com/zeromicro/go-zero v1.5.4
 	google.golang.org/grpc v1.57.0
@@ -27,8 +27,8 @@ require (
 	github.com/go-openapi/jsonreference v0.20.1 // indirect
 	github.com/go-openapi/swag v0.22.3 // indirect
 	github.com/go-redis/redis/v8 v8.11.5 // indirect
-	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/mock v1.6.0 // indirect
+	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/gnostic v0.5.7-v3refs // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
