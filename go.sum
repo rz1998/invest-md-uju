@@ -233,8 +233,8 @@ github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFR
 github.com/rogpeppe/go-internal v1.9.0 h1:73kH8U+JUqXU8lRuOHeVHaa/SZPifC7BkcraZVejAe8=
 github.com/rz1998/invest-basic v0.0.2 h1:l3LSY/kRT8rpZzOmP+PF8mczd8HsFlADvOT9Nyg0ujc=
 github.com/rz1998/invest-basic v0.0.2/go.mod h1:Yot01M7NOZ0+Y/tdbxSz/2rI9JOfKBT0lZy6RBGGm+g=
-github.com/rz1998/invest-trade-basic v0.0.1 h1:0PDTlW8DQkxXvxiypJrTeSFauretlD3MaxOYjXlXNAU=
-github.com/rz1998/invest-trade-basic v0.0.1/go.mod h1:t13/Fi//b0nKWNf2a1s5ZKd8CxTsyV3vDTMdRN2SnwE=
+github.com/rz1998/invest-trade-basic v0.0.2 h1:Z/5ECRGaMuoQDra0HArPS2w4hOAiQ1oeWjGnW2o8UKc=
+github.com/rz1998/invest-trade-basic v0.0.2/go.mod h1:0X2MGY1cnOmsCMHBuo/YTXrt6z6BlMhT2P6Gh+qs56M=
 github.com/spaolacci/murmur3 v0.0.0-20180118202830-f09979ecbc72/go.mod h1:JwIasOWyU6f++ZhiEuf87xNszmSA2myDM2Kzu9HwQUA=
 github.com/spaolacci/murmur3 v1.1.0 h1:7c1g84S4BPRrfL5Xrdp6fOJ206sU9y293DDHaoy0bLI=
 github.com/spaolacci/murmur3 v1.1.0/go.mod h1:JwIasOWyU6f++ZhiEuf87xNszmSA2myDM2Kzu9HwQUA=

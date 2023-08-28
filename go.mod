@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/gogo/protobuf v1.3.2
 	github.com/rz1998/invest-basic v0.0.2
-	github.com/rz1998/invest-trade-basic v0.0.1
+	github.com/rz1998/invest-trade-basic v0.0.2
 	github.com/zeromicro/go-zero v1.5.4
 	google.golang.org/grpc v1.57.0
 	google.golang.org/protobuf v1.31.0

@@ -4,14 +4,15 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"fmt"
-	"github.com/rz1998/invest-basic/types/investBasic"
-	tradeBasic "github.com/rz1998/invest-trade-basic"
-	"github.com/zeromicro/go-zero/core/logx"
 	"io"
+
+	"github.com/rz1998/invest-basic"
+	"github.com/rz1998/invest-basic/types/investBasic"
+	"github.com/zeromicro/go-zero/core/logx"
 )
 
 func FromStd2UjuUniqueCode(uniqueCode string) string {
-	code, exchangeCD := tradeBasic.GetSecInfo(uniqueCode)
+	code, exchangeCD := invest.GetSecInfo(uniqueCode)
 	if exchangeCD == "" {
 		return uniqueCode
 	}
@@ -28,7 +29,7 @@ func FromStd2UjuUniqueCode(uniqueCode string) string {
 }
 
 func FromUju2StdUniqueCode(ujuCode string) string {
-	code, exchangeCDUju := tradeBasic.GetSecInfo(ujuCode)
+	code, exchangeCDUju := invest.GetSecInfo(ujuCode)
 	var exchangeCD investBasic.ExchangeCD
 	switch string(exchangeCDUju) {
 	case "SH":
