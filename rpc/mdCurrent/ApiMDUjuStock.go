@@ -82,7 +82,7 @@ func write2Service(api *ApiMDUju) {
 		data, _ := encode(msg)
 		_, err := (*api.conn).Write(data)
 		if err != nil {
-			logx.Error(fmt.Sprintf("write2Service send error %v", err))
+			logx.Errorf("write2Service send error %v", err)
 			break
 		}
 
@@ -104,16 +104,16 @@ func readFromService(api *ApiMDUju) {
 		if err != nil {
 			if err == io.EOF {
 				// 结束
-				logx.Error(fmt.Sprintf("readMessage read eof %T %v", err, err))
+				logx.Errorf("readMessage read eof %T %v", err, err)
 			} else if err == io.ErrClosedPipe {
-				logx.Error(fmt.Sprintf("readMessage read stopped %T %v", err, err))
+				logx.Errorf("readMessage read stopped %T %v", err, err)
 			} else if strings.Contains(err.Error(), "closed") {
 				// 重连
-				logx.Info(fmt.Sprintf("readMessage read closed %T %v", err, err))
-				logx.Info(fmt.Sprintf("readMessage need reconnect:%t", api.needLogin))
+				logx.Infof("readMessage read closed %T %v", err, err)
+				logx.Infof("readMessage need reconnect:%t", api.needLogin)
 				api.isLogin = false
 			} else {
-				logx.Info(fmt.Sprintf("readMessage read error %T %v", err, err))
+				logx.Infof("readMessage read error %T %v", err, err)
 			}
 			break
 		}
@@ -141,7 +141,7 @@ func (api *ApiMDUju) sendMsgLogin() {
 	data, _ := encode(msg)
 	_, err := (*api.conn).Write(data)
 	if err != nil {
-		logx.Error(fmt.Sprintf("send error %v", err))
+		logx.Errorf("send error %v", err)
 	}
 }
 
@@ -169,7 +169,7 @@ func (api *ApiMDUju) Logout() {
 	logx.Info("closing conn")
 	if api.conn != nil {
 		err := (*api.conn).Close()
-		logx.Info(fmt.Sprintf("ApiMDUjuStock logout %v", err))
+		logx.Infof("ApiMDUjuStock logout %v", err)
 	}
 	logx.Info("ApiMDUjuStock finished logout")
 }
@@ -179,7 +179,7 @@ func (api *ApiMDUju) Sub(uniqueCodes []string) {
 		return
 	}
 	if !api.IsLogin() {
-		logx.Error(fmt.Sprintf("%s stopped by %s", "Sub", "not login"))
+		logx.Errorf("%s stopped by %s", "Sub", "not login")
 		return
 	}
 	// 去重
@@ -198,7 +198,7 @@ func (api *ApiMDUju) Sub(uniqueCodes []string) {
 		}
 	}
 	if len(ujuCodes) > 0 && api.cnOut != nil {
-		logx.Error(fmt.Sprintf("subing %v", ujuCodes))
+		logx.Infof("subing %v", ujuCodes)
 		msg := &mdCurrent.NettyMessage{
 			Header: &mdCurrent.Header{
 				Type: mdCurrent.Header_SERVICE_REQ,
@@ -266,7 +266,7 @@ func handleMessage(api *ApiMDUju) {
 		}
 		if msg.Header.Type == mdCurrent.Header_LOGIN_RESP {
 			if msg.LoginRespMessage.LoginResult == mdCurrent.LoginRespMessage_FAIL {
-				logx.Error(fmt.Sprintf("login failed %+v", msg))
+				logx.Errorf("login failed %+v", msg)
 			} else {
 				logx.Info("login succeed...")
 				api.isLogin = true
@@ -408,7 +408,7 @@ func decode(buf []byte, n int, catchSize int32) *mdCurrent.NettyMessage {
 	r := snappy.NewReader(bytes.NewReader(buf[:n]))
 	_, err = r.Read(decoded)
 	if err != nil {
-		logx.Error(fmt.Sprintf("decode snappy decode error %v", err))
+		logx.Errorf("decode snappy decode error %v", err)
 	}
 	//decoded := reverse(buf, n)
 	size, index = proto.DecodeVarint(decoded)
@@ -417,7 +417,7 @@ func decode(buf []byte, n int, catchSize int32) *mdCurrent.NettyMessage {
 	msg := &mdCurrent.NettyMessage{}
 	err = proto.Unmarshal(test, msg)
 	if err != nil {
-		logx.Error(fmt.Sprintf("decode error %v", err))
+		logx.Errorf("decode error %v", err)
 	}
 	return msg
 }
