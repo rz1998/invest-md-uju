@@ -624,3 +624,7 @@ message UJU_SZSEL2_Tick{
   string OOrT=14;
 }
 
+
+service Test {
+  rpc Qry (UJU_SZSEL2_Tick) returns (UJU_SZSEL2_Tick);
+}

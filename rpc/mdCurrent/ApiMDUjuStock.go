@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gogo/protobuf/proto"
+	"github.com/golang/protobuf/proto"
 	"github.com/rz1998/invest-basic/types/investBasic"
 	"github.com/rz1998/invest-md-uju/rpc/mdCurrent/internal/config"
 	"github.com/rz1998/invest-md-uju/rpc/mdCurrent/internal/logic"
@@ -175,7 +175,7 @@ func (api *ApiMDUju) Logout() {
 }
 
 func (api *ApiMDUju) Sub(uniqueCodes []string) {
-	if uniqueCodes == nil || len(uniqueCodes) == 0 {
+	if len(uniqueCodes) == 0 {
 		return
 	}
 	if !api.IsLogin() {
@@ -197,7 +197,7 @@ func (api *ApiMDUju) Sub(uniqueCodes []string) {
 			mapCode[uniqueCode] = 0
 		}
 	}
-	if ujuCodes != nil && len(ujuCodes) > 0 && api.cnOut != nil {
+	if len(ujuCodes) > 0 && api.cnOut != nil {
 		logx.Error(fmt.Sprintf("subing %v", ujuCodes))
 		msg := &mdCurrent.NettyMessage{
 			Header: &mdCurrent.Header{
@@ -283,7 +283,7 @@ func handleMessage(api *ApiMDUju) {
 			}
 		} else if msg.Header.Type == mdCurrent.Header_SERVICE_RESP {
 			businessRespList := msg.GetBusinessRespMessage()
-			if businessRespList != nil {
+			if len(businessRespList) > 0 {
 				for _, result := range businessRespList {
 					if result != nil {
 						switch result.GetDataType() {
